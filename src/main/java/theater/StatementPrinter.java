@@ -46,4 +46,53 @@ public class StatementPrinter {
         return NumberFormat.getCurrencyInstance(Locale.US)
                 .format(amount / Constants.PERCENT_FACTOR);
     }
+
+    /**
+     * Calculates the amount for a given performance.
+     * @param performance the performance to calculate amount for
+     * @return the calculated amount
+     */
+    public int getAmount(Performance performance) {
+        Play play = getPlay(performance);
+        AbstractPerformanceCalculator calculator =
+                AbstractPerformanceCalculator.createPerformanceCalculator(performance, play);
+        return calculator.amountFor();
+    }
+
+    /**
+     * Gets the play associated with a performance.
+     * @param performance the performance
+     * @return the play
+     */
+    public Play getPlay(Performance performance) {
+        return statementData.getPlay(performance);
+    }
+
+    /**
+     * Calculates the volume credits for a given performance.
+     * @param performance the performance to calculate volume credits for
+     * @return the calculated volume credits
+     */
+    public int getVolumeCredits(Performance performance) {
+        Play play = getPlay(performance);
+        AbstractPerformanceCalculator calculator =
+                AbstractPerformanceCalculator.createPerformanceCalculator(performance, play);
+        return calculator.volumeCredits();
+    }
+
+    /**
+     * Calculates the total amount for all performances.
+     * @return the total amount
+     */
+    public int getTotalAmount() {
+        return statementData.totalAmount();
+    }
+
+    /**
+     * Calculates the total volume credits for all performances.
+     * @return the total volume credits
+     */
+    public int getTotalVolumeCredits() {
+        return statementData.volumeCredits();
+    }
 }
