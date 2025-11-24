@@ -29,10 +29,19 @@ public class StatementData {
         return performances;
     }
 
+    /**
+     * Gets the play associated with a performance.
+     * @param performance the performance
+     * @return the play
+     */
     public Play getPlay(Performance performance) {
         return plays.get(performance.getPlayID());
     }
 
+    /**
+     * Calculates the total amount for all performances.
+     * @return the total amount
+     */
     public int totalAmount() {
         int result = 0;
         for (PerformanceData performanceData : performances) {
@@ -41,6 +50,10 @@ public class StatementData {
         return result;
     }
 
+    /**
+     * Calculates the total volume credits for all performances.
+     * @return the total volume credits
+     */
     public int volumeCredits() {
         int result = 0;
         for (PerformanceData performanceData : performances) {
@@ -50,10 +63,10 @@ public class StatementData {
     }
 
     private PerformanceData createPerformanceData(Performance performance) {
-        AbstractPerformanceCalculator performanceCalculator =
+        final AbstractPerformanceCalculator performanceCalculator =
                 AbstractPerformanceCalculator.createPerformanceCalculator(performance, getPlay(performance));
-        int amount = performanceCalculator.amountFor();
-        int volumeCredits = performanceCalculator.volumeCredits();
+        final int amount = performanceCalculator.amountFor();
+        final int volumeCredits = performanceCalculator.volumeCredits();
         return new PerformanceData(performanceCalculator, amount, volumeCredits);
     }
 }

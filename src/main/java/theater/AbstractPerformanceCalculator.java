@@ -20,6 +20,13 @@ public abstract class AbstractPerformanceCalculator {
         return play;
     }
 
+    /**
+     * Creates an appropriate performance calculator based on the play type.
+     * @param performance the performance
+     * @param play the play
+     * @return a calculator instance for the play type
+     * @throws RuntimeException if the play type is unknown
+     */
     public static AbstractPerformanceCalculator createPerformanceCalculator(Performance performance, Play play) {
         switch (play.getType()) {
             case "tragedy":
@@ -35,8 +42,16 @@ public abstract class AbstractPerformanceCalculator {
         }
     }
 
+    /**
+     * Calculates the amount for the performance.
+     * @return the calculated amount
+     */
     public abstract int amountFor();
 
+    /**
+     * Calculates the volume credits for the performance.
+     * @return the calculated volume credits
+     */
     public int volumeCredits() {
         return Math.max(performance.getAudience() - Constants.BASE_VOLUME_CREDIT_THRESHOLD, 0);
     }

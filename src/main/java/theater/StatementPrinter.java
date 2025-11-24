@@ -53,8 +53,8 @@ public class StatementPrinter {
      * @return the calculated amount
      */
     public int getAmount(Performance performance) {
-        Play play = getPlay(performance);
-        AbstractPerformanceCalculator calculator =
+        final Play play = getPlay(performance);
+        final AbstractPerformanceCalculator calculator =
                 AbstractPerformanceCalculator.createPerformanceCalculator(performance, play);
         return calculator.amountFor();
     }
@@ -74,8 +74,8 @@ public class StatementPrinter {
      * @return the calculated volume credits
      */
     public int getVolumeCredits(Performance performance) {
-        Play play = getPlay(performance);
-        AbstractPerformanceCalculator calculator =
+        final Play play = getPlay(performance);
+        final AbstractPerformanceCalculator calculator =
                 AbstractPerformanceCalculator.createPerformanceCalculator(performance, play);
         return calculator.volumeCredits();
     }
