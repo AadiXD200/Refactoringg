@@ -796,7 +796,7 @@ but take the time now to clean up any remaining issues.
 2. Update your `log.txt` file and commit the changes to any files.
    Make sure to include the string "Task 6" in your commit message.
 
-- [ ] If your code was already clean, just [X] the checkbox on this line and commit that change — again, remembering to
+- [X] If your code was already clean, just [X] the checkbox on this line and commit that change — again, remembering to
   include "Task 6" in your commit message.
 
 3. Update your `log.txt` one final time so that it contains your last "Task 6" commit, then push your completed code to MarkUs.

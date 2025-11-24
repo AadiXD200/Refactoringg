@@ -8,12 +8,10 @@ import java.util.Map;
  * This class generates a statement for a given invoice of performances.
  */
 public class StatementPrinter {
-    public Invoice invoice;
-    public Map<String, Play> plays;
+    private final StatementData statementData;
 
     public StatementPrinter(Invoice invoice, Map<String, Play> plays) {
-        this.invoice = invoice;
-        this.plays = plays;
+        this.statementData = new StatementData(invoice, plays);
     }
 
     /**
@@ -22,47 +20,30 @@ public class StatementPrinter {
      * @throws RuntimeException if one of the play types is not known
      */
     public String statement() {
-        int totalAmount = 0;
-        int volumeCredits = 0;
-        StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + System.lineSeparator());
+        return renderPlainText();
+    }
 
-        NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
+    protected String renderPlainText() {
+        final StringBuilder result = new StringBuilder("Statement for " + statementData.getCustomer()
+                + System.lineSeparator());
 
-        for (Performance p : invoice.getPerformances()) {
-            Play play = plays.get(p.playID);
-
-            int thisAmount = 0;
-            switch (play.type) {
-                case "tragedy":
-                    thisAmount = 40000;
-                    if (p.audience > Constants.TRAGEDY_AUDIENCE_THRESHOLD) {
-                        thisAmount += 1000 * (p.audience - 30);
-                    }
-                    break;
-                case "comedy":
-                    thisAmount = Constants.COMEDY_BASE_AMOUNT;
-                    if (p.audience > Constants.COMEDY_AUDIENCE_THRESHOLD) {
-                        thisAmount += Constants.COMEDY_OVER_BASE_CAPACITY_AMOUNT
-                                + (Constants.COMEDY_OVER_BASE_CAPACITY_PER_PERSON
-                                * (p.audience - Constants.COMEDY_AUDIENCE_THRESHOLD));
-                    }
-                    thisAmount += Constants.COMEDY_AMOUNT_PER_AUDIENCE * p.audience;
-                    break;
-                default:
-                    throw new RuntimeException(String.format("unknown type: %s", play.type));
-            }
-
-            // add volume credits
-            volumeCredits += Math.max(p.audience - Constants.BASE_VOLUME_CREDIT_THRESHOLD, 0);
-            // add extra credit for every five comedy attendees
-            if ("comedy".equals(play.type)) volumeCredits += p.audience / Constants.COMEDY_EXTRA_VOLUME_FACTOR;
+        for (PerformanceData performanceData : statementData.getPerformances()) {
 
             // print line for this order
-            result.append(String.format("  %s: %s (%s seats)%n", play.name, frmt.format(thisAmount / 100), p.audience));
-            totalAmount += thisAmount;
+            result.append(String.format("  %s: %s (%s seats)%n", performanceData.getName(),
+                    usd(performanceData.getAmount()), performanceData.getAudience()));
         }
-        result.append(String.format("Amount owed is %s%n", frmt.format(totalAmount / 100)));
-        result.append(String.format("You earned %s credits%n", volumeCredits));
+        result.append(String.format("Amount owed is %s%n", usd(statementData.totalAmount())));
+        result.append(String.format("You earned %s credits%n", statementData.volumeCredits()));
         return result.toString();
+    }
+
+    protected StatementData getStatementData() {
+        return statementData;
+    }
+
+    protected String usd(int amount) {
+        return NumberFormat.getCurrencyInstance(Locale.US)
+                .format(amount / Constants.PERCENT_FACTOR);
     }
 }
