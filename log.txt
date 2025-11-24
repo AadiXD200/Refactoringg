@@ -1,0 +1,13 @@
+36b78cf Task 5: Support history and pastoral plays
+b8354a3 Task 4.3: Polymorphic calculators
+08ec928 Task 4.2: Delegate calculations to calculator
+250b6b4 Task 4.1: Introduce performance calculator
+967625b Task 3.2: Add HTML statement printer
+2b366d6 Task 3.1: Split calculation phase
+3c7099b Task 2.4: Refactor totals
+5f704f1 Task 2.3: Add USD formatter helper
+a94dd63 Task 2.2: Extract volume credits
+6b712ea Task 2.1: Extract amount calculation
+6647f4c Task 1.2: Update git log
+cb4be1f Task 1.1: Fix CheckStyle issues
+8dc55e9 Initial commit
